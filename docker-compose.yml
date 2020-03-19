@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./init.sql:/data/application/init.sql
+    environment:
+      MYSQL_DATABASE: boutique_jeremy
+      MYSQL_USER: jeremy
+      MYSQL_PASSWORD: Tekila963
+      MYSQL_ROOT_PASSWORD: Tekila963
+    ports:
+      - "9906:3306"
+
+  web:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: php_web
+    depends_on:
+      - db
+    volumes:
+      - ./site_ecommerce/:/var/www/html
+    ports:
+      - "8100:80"
+    stdin_open: true
+    tty: true
